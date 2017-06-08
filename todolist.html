@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+    <head>
+        <title> Angular 2 - Simple Application </title>   
+            <!-- Libraries -->
+            <script src="node_modules/core-js/client/shim.min.js"></script> 
+            <script src="node_modules/zone.js/dist/zone.js"></script> 
+            <script src="node_modules/reflect-metadata/Reflect.js"></script> 
+            <script src="node_modules/systemjs/dist/system.src.js"></script>
+
+            <!-- Stylesheets -->
+             <link rel="stylesheet" type="text/css" href="resources/vendor/semantic.min.css"> <!-- Semantic-UI a css framework similiar to foundation,twitter bootstrap -->
+             <link rel="stylesheet" type="text/css" href="styles.css"> 
+            <link rel="stylesheet" type="text/css" href="login_css.css"> 
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+    <body>
+
+        <script src="resources/systemjs.config.js"></script> 
+        <!--<script> System.import('app.js').then(null, console.error.bind(console)); </script>-->
+        <script> System.import('todolist.js').then(null, console.error.bind(console)); </script>
+
+        <header class="header">
+            <h1>Todo List</h1>
+            <logout></logout> 
+        </header> 
+         <form class="ui large form segment">
+            <span class="center text"> Add a Task below <i class="material-icons font">border_color</i> </span>
+           
+            <div>
+                <!--<input type="text" class="enter_list"></input>-->
+                <!--<input #newInfo (keyup.enter)="add(newInfo.value)" (blur)="add(newInfo.value); newInfo.value='' " class="enter_list">-->
+                
+                <add></add>
+                
+                <!--<button (click)=addInfo(newInfo.value) class="ui negative floated button add_button">Add</button>-->
+            </div>
+            <!--<tasklist></tasklist>-->
+            
+         </form>
+       
+        
+
+    </body>
+
+</html>

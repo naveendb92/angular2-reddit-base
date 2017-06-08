@@ -1,0 +1,86 @@
+.center{
+    text-align:center;
+}
+.middle{
+    width: 40%;
+    height: 600px;
+
+    position:absolute; /*it can be fixed too*/
+    left:0; right:0;
+    top:0; bottom:0;
+    margin:auto;
+
+    /*this to solve "the content will not be cut when the window is smaller than the content": */
+    max-width:100%;
+    max-height:100%;
+    /*overflow:auto;*/
+}
+.underline{
+    text-decoration: underline;
+}
+.enter_list{
+    width: 23% !important;
+    margin-top: 10px !important;
+    height: 25px;
+    position: relative;
+    left: 45px;
+}
+.add_button{
+    margin: 10px !important;
+    padding: 6px !important;
+}
+
+.checkbox_align_center{
+    position: relative;
+    top: 5px;
+}
+.login_align_center{
+    position: relative;
+    top: 10px;  
+}
+.done-true {
+    text-decoration: line-through;
+    color:grey;
+}
+.done-false {
+    text-decoration: none;
+    color:black;
+}
+
+.pointer{
+    cursor: pointer;
+}
+.icon_left{
+    position: absolute;
+    left: 30%;
+    cursor: pointer;
+    color: #c30101;
+}
+.header{
+    margin: auto;
+    height: 50px;
+    background: #00b5ad;
+    text-align: center;
+    color: #fff;
+}
+.logout{
+    position: absolute;
+    top: 4px;
+    right: 1px;
+}
+.add_middle{
+    position: relative;
+    left: 5%;
+}
+.text{
+    position: relative;
+    left: 44px;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: #a9a8a8;
+}
+.font{
+    font-size: 14px !important;
+    padding-left: 10px;
+    color: yellowgreen;
+}
