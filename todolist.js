@@ -11,7 +11,7 @@ System.register(['@angular/core', '@angular/platform-browser', "@angular/platfor
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, platform_browser_1, platform_browser_dynamic_1;
-    var LogOutModule, ContactInfo, AddListModule, TaskListComponent, RedditAppModule;
+    var ToggleComponent, LogOutModule, ContactInfo, AddListModule, TaskListComponent, RedditAppModule;
     return {
         setters:[
             function (core_1_1) {
@@ -24,14 +24,16 @@ System.register(['@angular/core', '@angular/platform-browser', "@angular/platfor
                 platform_browser_dynamic_1 = platform_browser_dynamic_1_1;
             }],
         execute: function() {
+            ToggleComponent = (function () {
+                function ToggleComponent() {
+                    this.shouldToggle = false;
+                }
+                return ToggleComponent;
+            }());
+            exports_1("ToggleComponent", ToggleComponent);
             LogOutModule = (function () {
                 function LogOutModule() {
                 }
-                // logout(){
-                //     alert("logout");
-                //      window.location.href = 'index.html';
-                //      return false;
-                // }
                 LogOutModule.prototype.logout = function () {
                     if (confirm('Are yu sure you want to logout ?')) {
                         window.location.href = "index.html";
@@ -61,9 +63,8 @@ System.register(['@angular/core', '@angular/platform-browser', "@angular/platfor
                     ];
                 }
                 AddListModule.prototype.add = function (newInfo) {
-                    console.log(this.information);
                     if (newInfo) {
-                        this.information.push(new ContactInfo(newInfo, 'false'));
+                        this.information.unshift(new ContactInfo(newInfo, 'false'));
                     }
                     return false;
                 };
@@ -72,35 +73,44 @@ System.register(['@angular/core', '@angular/platform-browser', "@angular/platfor
                         this.information.splice(index, 1);
                     }
                 };
-                AddListModule.prototype.toggleHighlight = function (value) {
+                AddListModule.prototype.toggleHighlight_new = function (value, index) {
+                    console.log(value.toElement.className);
+                    if (value.toElement.className == "done-false") {
+                        value.toElement.className = "done-true";
+                        this.information.push(new ContactInfo(this.information[index].description, 'true'));
+                        this.information.splice(index, 1);
+                    }
+                    else {
+                        value.toElement.className = "done-false";
+                    }
+                };
+                AddListModule.prototype.toggleHighlight = function (value, index) {
                     // console.log(value.toElement.id);
                     for (var key in this.information) {
                         if (this.information[key].description == value.toElement.id) {
-                            console.log(this.information[key].done);
-                            if (this.information[key].done == 'false') {
-                                this.information[key].done = 'true';
-                            }
-                            else {
+                            //console.log("1");
+                            //console.log(this.information[key].done); 
+                            this.information.push(new ContactInfo(this.information[key].description, 'true'));
+                            if (this.information[index].done == 'true') {
+                                console.log(index);
                                 this.information[key].done = 'false';
                             }
                         }
                     }
-                    if (value.target.checked == true) {
-                        console.log("if");
-                        console.log();
-                        this.cross = "";
-                        this.cross = "true";
+                    if (this.information[index].done == 'false') {
+                        //console.log("if");
+                        this.information[index].done = 'true';
                     }
-                    if (value.target.checked == false) {
-                        console.log("else");
-                        this.cross = "";
-                        this.cross = "false";
+                    else {
+                        console.log(index);
+                        this.information[index].done = 'true';
                     }
+                    this.information.splice(index, 1);
                 };
                 AddListModule = __decorate([
                     core_1.Component({
                         selector: 'add',
-                        template: "\n        <input #newInfo (keyup.enter)=\"add(newInfo.value)\" (blur)=\"add(newInfo.value); newInfo.value='' \" class=\"enter_list\">\n        <button (click) = \"add(newInfo.value)\" class=\"ui positive floated button add_button add_middle\"> Add </button>\n        <ul>\n            <li *ngFor=\"let i of information; let index = index\">\n                <pre> <label class=\"pointer\" (click)=\"toggleHighlight($event);\"><input type=\"checkbox\" class=\"checkbox_align_center\" ng-model=\"done\"><span class=\"done-{{ i.done }}\" id=\"{{i.description}}\"> {{i.description}} </span></label>  <i class=\"material-icons icon_left\" (click)=\"remove(index)\">cancel</i></pre>\n            </li>\n        </ul>\n    "
+                        template: "\n        <input #newInfo (keyup.enter)=\"add(newInfo.value)\" (blur)=\"add(newInfo.value); newInfo.value='' \" class=\"enter_list\">\n        <button (click) = \"add(newInfo.value)\" class=\"ui positive floated button add_button add_middle\"> Add </button>\n        <ul>\n            <li *ngFor=\"let info of information; let index = index\">\n                <pre> <label class=\"pointer\" ><input type=\"checkbox\" class=\"checkbox_align_center\" ><span (click)=\"toggleHighlight_new($event,index);\" class=\"done-{{ info.done }}\" id=\"{{info.description}}\"> {{info.description}} </span></label>  <i class=\"material-icons icon_left\" (click)=\"remove(index)\">cancel</i></pre>\n            </li>\n        </ul>\n    "
                     }), 
                     __metadata('design:paramtypes', [])
                 ], AddListModule);

@@ -6,6 +6,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic"; 
 import { Directive, ViewContainerRef } from '@angular/core';
 
+export class ToggleComponent {
+    shouldToggle = false;
+}
 
 @Component({
     selector:'logout',
@@ -14,11 +17,6 @@ import { Directive, ViewContainerRef } from '@angular/core';
     `
 })
 class LogOutModule{
-    // logout(){
-    //     alert("logout");
-    //      window.location.href = 'index.html';
-    //      return false;
-    // }
     logout(): void{
         if(confirm('Are yu sure you want to logout ?')){
             window.location.href = "index.html";
@@ -38,8 +36,8 @@ class ContactInfo {
         <input #newInfo (keyup.enter)="add(newInfo.value)" (blur)="add(newInfo.value); newInfo.value='' " class="enter_list">
         <button (click) = "add(newInfo.value)" class="ui positive floated button add_button add_middle"> Add </button>
         <ul>
-            <li *ngFor="let i of information; let index = index">
-                <pre> <label class="pointer" (click)="toggleHighlight($event);"><input type="checkbox" class="checkbox_align_center" ng-model="done"><span class="done-{{ i.done }}" id="{{i.description}}"> {{i.description}} </span></label>  <i class="material-icons icon_left" (click)="remove(index)">cancel</i></pre>
+            <li *ngFor="let info of information; let index = index">
+                <pre> <label class="pointer" ><input type="checkbox" class="checkbox_align_center" ><span (click)="toggleHighlight_new($event,index);" class="done-{{ info.done }}" id="{{info.description}}"> {{info.description}} </span></label>  <i class="material-icons icon_left" (click)="remove(index)">cancel</i></pre>
             </li>
         </ul>
     `
@@ -54,9 +52,8 @@ class AddListModule{
     ];
     
     add(newInfo:string){
-        console.log(this.information);
         if(newInfo){
-            this.information.push(new ContactInfo(newInfo,'false'));
+            this.information.unshift(new ContactInfo(newInfo,'false'));
         }
         return false;
     }
@@ -67,37 +64,77 @@ class AddListModule{
         }
     }
 
+    toggleHighlight_new(value,index: number){
 
-    toggleHighlight(value) {
+        console.log(value.toElement.className);
+        
+        if(value.toElement.className == "done-false"){
+            value.toElement.className = "done-true";
+            this.information.push(new ContactInfo(this.information[index].description,'true'));
+            this.information.splice(index, 1); 
+        }
+        else{
+            value.toElement.className = "done-false";
+                       
+        }
+       
+
+    }
+
+    toggleHighlight(value,index: number) {
        // console.log(value.toElement.id);
+        
+        
         
         for(let key in this.information){
             if(this.information[key].description == value.toElement.id){
-                console.log(this.information[key].done);
-                if(this.information[key].done == 'false'){
-                    this.information[key].done = 'true'
+                //console.log("1");
+                //console.log(this.information[key].done); 
+                this.information.push(new ContactInfo(this.information[key].description,'true'));
+        
+                if(this.information[index].done == 'true'){
+                    console.log(index);
+                    this.information[key].done = 'false';
                 }
-                else{
-                    this.information[key].done = 'false'
-                }
-
                 
+                //console.log(this.information[key].done);
+
+                // if(this.information[key].done == 'false'){
+                //     console.log("if");
+                //     this.information[key].done = 'true';
+                // }
+                // else{
+                //     console.log("else");
+                //     this.information[key].done = 'false';
+
+                //     if(this.information[key].done == 'false'){
+                //         this.information.push(new ContactInfo(this.information[key].description,'false'));
+                //         this.information.splice(index, 1);
+                //     }
+                // }
+               
+                //if(this.information[key].done == 'false'){
+                    // console.log("yes");
+                    // this.information.splice(index, 1);
+                    // this.information.push(new ContactInfo(this.information[key].description,'false'));
+              //}   
             }
+            
+       
         }
-        
-        if(value.target.checked == true){
-            console.log("if");  
-            console.log()
-            this.cross = "";
-            this.cross = "true"; 
+
+            
+        if(this.information[index].done == 'false'){
+            //console.log("if");
+            this.information[index].done = 'true';
         }
-        if(value.target.checked == false){
-            console.log("else");
-            this.cross = "";
-             this.cross = "false"; 
+        else{
+            console.log(index);
+            this.information[index].done = 'true';
         }
-           
-        
+
+        this.information.splice(index, 1);
+
         
     }
    
