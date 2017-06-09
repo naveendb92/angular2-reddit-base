@@ -19,6 +19,7 @@ export class ToggleComponent {
 class LogOutModule{
     logout(): void{
         if(confirm('Are yu sure you want to logout ?')){
+            sessionStorage.clear();
             window.location.href = "index.html";
             
         }

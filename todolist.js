@@ -36,6 +36,7 @@ System.register(['@angular/core', '@angular/platform-browser', "@angular/platfor
                 }
                 LogOutModule.prototype.logout = function () {
                     if (confirm('Are yu sure you want to logout ?')) {
+                        sessionStorage.clear();
                         window.location.href = "index.html";
                     }
                 };

@@ -11,7 +11,7 @@ System.register(['@angular/core', '@angular/platform-browser', "@angular/platfor
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, platform_browser_1, platform_browser_dynamic_1;
-    var LoginModule, RedditAppModule;
+    var logged_in_name, logged_in_pwd, LoginModule, RedditAppModule;
     return {
         setters:[
             function (core_1_1) {
@@ -35,13 +35,35 @@ System.register(['@angular/core', '@angular/platform-browser', "@angular/platfor
                     console.log("yes");
                 }
             }*/
+            console.log(sessionStorage.getItem('userpwd'));
+            logged_in_name = sessionStorage.getItem('username');
+            logged_in_pwd = sessionStorage.getItem('userpwd');
+            if (logged_in_name && logged_in_pwd) {
+                window.location.href = 'todolist.html';
+            }
             LoginModule = (function () {
                 function LoginModule() {
+                    //private router: Router;
+                    this.hideElement = false;
+                    console.log("on load");
+                    console.log(sessionStorage.getItem('username'));
+                    //window.location.href = 'todolist.html';
                 }
-                //private router: Router;
+                LoginModule.prototype.callTodoList_new = function (name, pwd) {
+                    var uname = name.value;
+                    var upwd = pwd.value;
+                    sessionStorage.setItem('username', uname);
+                    sessionStorage.setItem('userpwd', upwd);
+                    //console.log(sessionStorage.getItem('username'));
+                    if (uname && upwd) {
+                        window.location.href = 'todolist.html';
+                    }
+                    return false;
+                };
                 LoginModule.prototype.callTodoList = function (title, link) {
                     console.log("Adding article title: " + title.value + " and link: " + link.value + " ");
-                    window.location.href = 'todolist.html';
+                    //sessionStorage.setItem('username',)
+                    //window.location.href = 'todolist.html';
                     //this.router.navigate(['todolist']);
                     return false;
                 };
@@ -51,7 +73,7 @@ System.register(['@angular/core', '@angular/platform-browser', "@angular/platfor
                         host: {
                             class: 'middle'
                         },
-                        template: "\n        <form class=\"ui large form segment\">\n            <h3 class=\"ui header center underline\"> <span class=\"login_align_center\">LOGIN</span> </h3>\n\n            <div class=\"field\">\n                <label for=\"title\">Username:</label>\n                <input name=\"title\" #username>\n            </div>\n\n            <div class=\"field\">\n                <label for=\"link\">Password:</label>\n                <input type=\"password\" name=\"link\" #userpwd>\n            </div>\n\n            <button (click) = \"callTodoList(username, userpwd)\" class=\"ui positive right floated button\">Submit</button>\n\n        </form>\n    "
+                        template: "\n        <form class=\"ui large form segment\" [style.display]=\"hideElement?'none':'block'\">\n            <h3 class=\"ui header center underline\"> <span class=\"login_align_center\">LOGIN</span> </h3>\n\n            <div class=\"field\">\n                <label for=\"title\">Username:</label>\n                <input name=\"title\" #username>\n            </div>\n\n            <div class=\"field\">\n                <label for=\"link\">Password:</label>\n                <input type=\"password\" name=\"link\" #userpwd>\n            </div>\n\n            <button (click) = \"callTodoList_new(username, userpwd)\" class=\"ui positive right floated button\">Submit</button>\n\n        </form>\n    "
                     }), 
                     __metadata('design:paramtypes', [])
                 ], LoginModule);

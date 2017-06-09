@@ -17,6 +17,15 @@ class TodoListModule{
     }
 }*/
 
+console.log(sessionStorage.getItem('username'));
+console.log(sessionStorage.getItem('userpwd'));
+
+let logged_in_name = sessionStorage.getItem('username');
+let logged_in_pwd = sessionStorage.getItem('userpwd');
+
+if(logged_in_name && logged_in_pwd){
+    window.location.href = 'todolist.html';
+}
 
 @Component({
     selector: 'reddit',
@@ -24,7 +33,7 @@ class TodoListModule{
         class:'middle'
     },
     template: `
-        <form class="ui large form segment">
+        <form class="ui large form segment" [style.display]="hideElement?'none':'block'">
             <h3 class="ui header center underline"> <span class="login_align_center">LOGIN</span> </h3>
 
             <div class="field">
@@ -37,17 +46,37 @@ class TodoListModule{
                 <input type="password" name="link" #userpwd>
             </div>
 
-            <button (click) = "callTodoList(username, userpwd)" class="ui positive right floated button">Submit</button>
+            <button (click) = "callTodoList_new(username, userpwd)" class="ui positive right floated button">Submit</button>
 
         </form>
     `
 })
 class LoginModule { 
     //private router: Router;
+    public hideElement = false;
+    constructor(){
+        
+        console.log("on load");
+        console.log(sessionStorage.getItem('username'));
+        //window.location.href = 'todolist.html';
+    }
+
+    callTodoList_new(name,pwd){
+        let uname = name.value;
+        let upwd = pwd.value;
+        sessionStorage.setItem('username',uname);
+        sessionStorage.setItem('userpwd',upwd);
+        //console.log(sessionStorage.getItem('username'));
+        if(uname && upwd){
+            window.location.href = 'todolist.html';
+        }
+        return false;
+    }
 
     callTodoList(title: HTMLInputElement, link: HTMLInputElement): boolean{
         console.log(`Adding article title: ${title.value} and link: ${link.value} `);
-        window.location.href = 'todolist.html';
+        //sessionStorage.setItem('username',)
+        //window.location.href = 'todolist.html';
         //this.router.navigate(['todolist']);
         return false;
     }
