@@ -73,44 +73,27 @@ System.register(['@angular/core', '@angular/platform-browser', "@angular/platfor
                         this.information.splice(index, 1);
                     }
                 };
+                AddListModule.prototype.setUppercaseName = function (value) {
+                    console.log(value);
+                };
                 AddListModule.prototype.toggleHighlight_new = function (value, index) {
-                    console.log(value.toElement.className);
-                    if (value.toElement.className == "done-false") {
-                        value.toElement.className = "done-true";
+                    console.log(value.className);
+                    if (value.className == "done-false") {
+                        value.className = "done-true";
                         this.information.push(new ContactInfo(this.information[index].description, 'true'));
                         this.information.splice(index, 1);
                     }
                     else {
-                        value.toElement.className = "done-false";
+                        value.className = "done-false";
+                        var value_name = this.information[index].description;
+                        this.information.splice(index, 1);
+                        this.information.unshift(new ContactInfo(value_name, 'false'));
                     }
-                };
-                AddListModule.prototype.toggleHighlight = function (value, index) {
-                    // console.log(value.toElement.id);
-                    for (var key in this.information) {
-                        if (this.information[key].description == value.toElement.id) {
-                            //console.log("1");
-                            //console.log(this.information[key].done); 
-                            this.information.push(new ContactInfo(this.information[key].description, 'true'));
-                            if (this.information[index].done == 'true') {
-                                console.log(index);
-                                this.information[key].done = 'false';
-                            }
-                        }
-                    }
-                    if (this.information[index].done == 'false') {
-                        //console.log("if");
-                        this.information[index].done = 'true';
-                    }
-                    else {
-                        console.log(index);
-                        this.information[index].done = 'true';
-                    }
-                    this.information.splice(index, 1);
                 };
                 AddListModule = __decorate([
                     core_1.Component({
                         selector: 'add',
-                        template: "\n        <input #newInfo (keyup.enter)=\"add(newInfo.value)\" (blur)=\"add(newInfo.value); newInfo.value='' \" class=\"enter_list\">\n        <button (click) = \"add(newInfo.value)\" class=\"ui positive floated button add_button add_middle\"> Add </button>\n        <ul>\n            <li *ngFor=\"let info of information; let index = index\">\n                <pre> <label class=\"pointer\" ><input type=\"checkbox\" class=\"checkbox_align_center\" ><span (click)=\"toggleHighlight_new($event,index);\" class=\"done-{{ info.done }}\" id=\"{{info.description}}\"> {{info.description}} </span></label>  <i class=\"material-icons icon_left\" (click)=\"remove(index)\">cancel</i></pre>\n            </li>\n        </ul>\n    "
+                        template: "\n        <input #newInfo (blur)=\"add(newInfo.value); newInfo.value='' \" class=\"enter_list\" placeholder=\"Enter task...\" (keyup.enter)=\"newInfo.value=''\">\n        <button (click) = \"add(newInfo.value)\" class=\"ui positive floated button add_button add_middle\"> Add </button>\n        <ul>\n            <li *ngFor=\"let info of information; let index = index\" class=\"list_style\" >\n                \n                <label class=\"pointer\" (click)=\"toggleHighlight_new(check,index);\">\n                    <input type=\"checkbox\">\n                    <span #check class=\"done-{{ info.done }}\" id=\"{{info.description}}\"> {{info.description}} </span>\n                </label>  \n                <i class=\"material-icons icon_left\" (click)=\"remove(index)\">cancel</i>\n            </li>\n        </ul>\n    "
                     }), 
                     __metadata('design:paramtypes', [])
                 ], AddListModule);

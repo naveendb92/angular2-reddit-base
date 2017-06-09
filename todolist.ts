@@ -33,11 +33,16 @@ class ContactInfo {
 @Component({
     selector:'add',
     template:`
-        <input #newInfo (keyup.enter)="add(newInfo.value)" (blur)="add(newInfo.value); newInfo.value='' " class="enter_list">
+        <input #newInfo (blur)="add(newInfo.value); newInfo.value='' " class="enter_list" placeholder="Enter task..." (keyup.enter)="newInfo.value=''">
         <button (click) = "add(newInfo.value)" class="ui positive floated button add_button add_middle"> Add </button>
         <ul>
-            <li *ngFor="let info of information; let index = index">
-                <pre> <label class="pointer" ><input type="checkbox" class="checkbox_align_center" ><span (click)="toggleHighlight_new($event,index);" class="done-{{ info.done }}" id="{{info.description}}"> {{info.description}} </span></label>  <i class="material-icons icon_left" (click)="remove(index)">cancel</i></pre>
+            <li *ngFor="let info of information; let index = index" class="list_style" >
+                
+                <label class="pointer" (click)="toggleHighlight_new(check,index);">
+                    <input type="checkbox">
+                    <span #check class="done-{{ info.done }}" id="{{info.description}}"> {{info.description}} </span>
+                </label>  
+                <i class="material-icons icon_left" (click)="remove(index)">cancel</i>
             </li>
         </ul>
     `
@@ -52,7 +57,7 @@ class AddListModule{
     ];
     
     add(newInfo:string){
-        if(newInfo){
+        if(newInfo){           
             this.information.unshift(new ContactInfo(newInfo,'false'));
         }
         return false;
@@ -64,79 +69,28 @@ class AddListModule{
         }
     }
 
+    setUppercaseName(value){
+        console.log(value);
+    }
+
     toggleHighlight_new(value,index: number){
 
-        console.log(value.toElement.className);
+        console.log(value.className);
         
-        if(value.toElement.className == "done-false"){
-            value.toElement.className = "done-true";
+        if(value.className == "done-false"){         //If the task is Not Completed
+            value.className = "done-true";
             this.information.push(new ContactInfo(this.information[index].description,'true'));
             this.information.splice(index, 1); 
         }
-        else{
-            value.toElement.className = "done-false";
-                       
+        else{                                                  //If the task is Completed                                              
+            value.className = "done-false";
+            let value_name = this.information[index].description;
+            this.information.splice(index, 1);
+            this.information.unshift(new ContactInfo(value_name,'false'));         
         }
-       
 
     }
 
-    toggleHighlight(value,index: number) {
-       // console.log(value.toElement.id);
-        
-        
-        
-        for(let key in this.information){
-            if(this.information[key].description == value.toElement.id){
-                //console.log("1");
-                //console.log(this.information[key].done); 
-                this.information.push(new ContactInfo(this.information[key].description,'true'));
-        
-                if(this.information[index].done == 'true'){
-                    console.log(index);
-                    this.information[key].done = 'false';
-                }
-                
-                //console.log(this.information[key].done);
-
-                // if(this.information[key].done == 'false'){
-                //     console.log("if");
-                //     this.information[key].done = 'true';
-                // }
-                // else{
-                //     console.log("else");
-                //     this.information[key].done = 'false';
-
-                //     if(this.information[key].done == 'false'){
-                //         this.information.push(new ContactInfo(this.information[key].description,'false'));
-                //         this.information.splice(index, 1);
-                //     }
-                // }
-               
-                //if(this.information[key].done == 'false'){
-                    // console.log("yes");
-                    // this.information.splice(index, 1);
-                    // this.information.push(new ContactInfo(this.information[key].description,'false'));
-              //}   
-            }
-            
-       
-        }
-
-            
-        if(this.information[index].done == 'false'){
-            //console.log("if");
-            this.information[index].done = 'true';
-        }
-        else{
-            console.log(index);
-            this.information[index].done = 'true';
-        }
-
-        this.information.splice(index, 1);
-
-        
-    }
    
 }
 
