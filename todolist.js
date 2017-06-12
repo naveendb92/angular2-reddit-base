@@ -36,7 +36,9 @@ System.register(['@angular/core', '@angular/platform-browser', "@angular/platfor
                 }
                 LogOutModule.prototype.logout = function () {
                     if (confirm('Are yu sure you want to logout ?')) {
-                        sessionStorage.clear();
+                        //sessionStorage.clear();
+                        sessionStorage.removeItem('username');
+                        sessionStorage.removeItem('userpwd');
                         window.location.href = "index.html";
                     }
                 };
@@ -58,20 +60,25 @@ System.register(['@angular/core', '@angular/platform-browser', "@angular/platfor
             }());
             AddListModule = (function () {
                 function AddListModule() {
-                    this.information = [
-                        new ContactInfo('Task 1', 'false'),
-                        new ContactInfo('Task 2', 'false')
-                    ];
+                    this.information = [];
+                    var data = JSON.parse(sessionStorage.getItem('list_of_taks'));
+                    if (sessionStorage.getItem('list_of_taks')) {
+                        for (var i in data) {
+                            this.information.push(new ContactInfo(data[i].description, data[i].done));
+                        }
+                    }
                 }
                 AddListModule.prototype.add = function (newInfo) {
                     if (newInfo) {
                         this.information.unshift(new ContactInfo(newInfo, 'false'));
+                        sessionStorage.setItem('list_of_taks', JSON.stringify(this.information));
                     }
                     return false;
                 };
                 AddListModule.prototype.remove = function (index) {
                     if (confirm('Are you sure you want to delete the Task?')) {
                         this.information.splice(index, 1);
+                        sessionStorage.setItem('list_of_taks', JSON.stringify(this.information));
                     }
                 };
                 AddListModule.prototype.setUppercaseName = function (value) {
@@ -83,12 +90,16 @@ System.register(['@angular/core', '@angular/platform-browser', "@angular/platfor
                         value.className = "done-true";
                         this.information.push(new ContactInfo(this.information[index].description, 'true'));
                         this.information.splice(index, 1);
+                        sessionStorage.setItem('list_of_taks', JSON.stringify(this.information));
+                        console.log(sessionStorage.getItem('list_of_taks'));
                     }
                     else {
                         value.className = "done-false";
                         var value_name = this.information[index].description;
                         this.information.splice(index, 1);
                         this.information.unshift(new ContactInfo(value_name, 'false'));
+                        sessionStorage.setItem('list_of_taks', JSON.stringify(this.information));
+                        console.log(sessionStorage.getItem('list_of_taks'));
                     }
                 };
                 AddListModule = __decorate([

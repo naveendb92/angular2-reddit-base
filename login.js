@@ -35,6 +35,7 @@ System.register(['@angular/core', '@angular/platform-browser', "@angular/platfor
                     console.log("yes");
                 }
             }*/
+            console.log(sessionStorage.getItem('username'));
             console.log(sessionStorage.getItem('userpwd'));
             logged_in_name = sessionStorage.getItem('username');
             logged_in_pwd = sessionStorage.getItem('userpwd');

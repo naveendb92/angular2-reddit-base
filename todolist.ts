@@ -19,7 +19,9 @@ export class ToggleComponent {
 class LogOutModule{
     logout(): void{
         if(confirm('Are yu sure you want to logout ?')){
-            sessionStorage.clear();
+            //sessionStorage.clear();
+            sessionStorage.removeItem('username');
+            sessionStorage.removeItem('userpwd');
             window.location.href = "index.html";
             
         }
@@ -53,13 +55,26 @@ class AddListModule{
     heroes:string[]
     cross:string
     information = [
-        new ContactInfo('Task 1','false'),
-        new ContactInfo('Task 2','false')
+        //new ContactInfo('Task 1','false'),
+        //new ContactInfo('Task 2','false')
     ];
+
+    constructor(){
+
+        let data = JSON.parse(sessionStorage.getItem('list_of_taks'));
+
+        if(sessionStorage.getItem('list_of_taks')){
+            for(let i in data){
+                this.information.push(new ContactInfo(data[i].description,data[i].done));
+            }
+        }
+    }
+    
     
     add(newInfo:string){
         if(newInfo){           
             this.information.unshift(new ContactInfo(newInfo,'false'));
+            sessionStorage.setItem('list_of_taks',JSON.stringify(this.information));  
         }
         return false;
     }
@@ -67,6 +82,7 @@ class AddListModule{
     remove(index: number): void {
         if (confirm('Are you sure you want to delete the Task?')) {
             this.information.splice(index, 1);
+            sessionStorage.setItem('list_of_taks',JSON.stringify(this.information));   
         }
     }
 
@@ -82,13 +98,19 @@ class AddListModule{
             value.className = "done-true";
             this.information.push(new ContactInfo(this.information[index].description,'true'));
             this.information.splice(index, 1); 
+            sessionStorage.setItem('list_of_taks',JSON.stringify(this.information));   
+            console.log(sessionStorage.getItem('list_of_taks'));
         }
         else{                                                  //If the task is Completed                                              
             value.className = "done-false";
             let value_name = this.information[index].description;
             this.information.splice(index, 1);
-            this.information.unshift(new ContactInfo(value_name,'false'));         
+            this.information.unshift(new ContactInfo(value_name,'false'));   
+            sessionStorage.setItem('list_of_taks',JSON.stringify(this.information));   
+            console.log(sessionStorage.getItem('list_of_taks'));
         }
+
+       
 
     }
 
